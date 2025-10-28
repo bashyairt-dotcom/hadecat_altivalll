@@ -380,12 +380,19 @@ function showLevelCompleted(){
 
   popup.classList.remove('hidden');
 
+  // ✅ تشغيل صوت النجاح بعد تأكيد تفاعل المستخدم
+  const videoOrImage = popup.querySelector('.clap-video');
+  videoOrImage.addEventListener('click', () => playCelebration());
+
+  // أزرار المستوى التالي
   if(next < LEVELS.length){
     document.getElementById('nextLevel').onclick = () => { popup.classList.add('hidden'); initLevel(next); };
   } else {
     document.getElementById('replayAll').onclick = () => { popup.classList.add('hidden'); initLevel(0); };
   }
 }
+
+
 
 // 🔘 زر الموسيقى
 musicToggle.onclick = () => {
@@ -410,6 +417,7 @@ initLevel(0);
 
 </body>
 </html>
+
 
 
 
