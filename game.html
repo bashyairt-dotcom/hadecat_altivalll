@@ -312,24 +312,42 @@ targets.appendChild(box);
 }
 
 function showLevelCompleted(){
-const next=currentLevelIndex+1;
-popup.innerHTML=`
-<img src="clap.gif" class="clap-gif" alt="تصفيق">
-<h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
-<p>النقاط: <strong>${score}</strong></p>
-`;
-if(next<LEVELS.length){popup.innerHTML+=`<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;}
-else{popup.innerHTML+=`<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;}
-popup.classList.remove('hidden');
-const clapImg=popup.querySelector('.clap-gif');
-clapImg.addEventListener('load',()=>playCorrect());
+    const next=currentLevelIndex+1;
+    popup.innerHTML=`
+    <img src="clap.gif" class="clap-gif" alt="تصفيق">
+    <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
+    <p>النقاط: <strong>${score}</strong></p>
+    `;
 
-if(next<LEVELS.length){
-document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden'); initLevel(next);};
-}else{
-document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden'); initLevel(0);};
+    if(next<LEVELS.length){
+        popup.innerHTML+=`<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
+    } else {
+        popup.innerHTML+=`<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;
+    }
+
+    popup.classList.remove('hidden');
+
+    const clapImg = popup.querySelector('.clap-gif');
+    clapImg.addEventListener('load',()=>playCorrect());
+
+    // إضافة الصوت عند الانتقال للمستوى التالي
+    const nextLevelSound = new Audio('nextLevel.m4a');
+
+    if(next<LEVELS.length){
+        document.getElementById('nextLevel').onclick = () => {
+            nextLevelSound.play(); // تشغيل صوت المستوى الجديد
+            popup.classList.add('hidden');
+            initLevel(next);
+        };
+    } else {
+        document.getElementById('replayAll').onclick = () => {
+            nextLevelSound.play(); // تشغيل صوت إعادة اللعبة
+            popup.classList.add('hidden');
+            initLevel(0);
+        };
+    }
 }
-}
+
 
 
 // === أزرار التحكم ===
@@ -339,6 +357,7 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
 
