@@ -355,14 +355,21 @@ function handleDrop(box, shape, color){
   if (!item) return;
   if (box.dataset.accept === shape){
     score += 10; scoreEl.textContent = score;
-    playCelebration();
+    
+    // تشغيل صوت الإجابة الصحيحة
+    const correctSound = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-1670.mp3");
+    correctSound.play();
+
     box.innerHTML = createShapeSVG(shape, color);
     item.remove();
     if (tray.children.length === 0) setTimeout(showLevelCompleted, 500);
   } else {
-    playWrong(); // صوت الخطأ عند التطابق الغلط
+    // تشغيل صوت الإجابة الخاطئة
+    const wrongSound = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-penalty-2024.mp3");
+    wrongSound.play();
   }
 }
+
 
 function showLevelCompleted(){
   const next = currentLevelIndex + 1;
@@ -417,6 +424,7 @@ initLevel(0);
 
 </body>
 </html>
+
 
 
 
