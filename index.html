@@ -110,6 +110,8 @@
     bgAudio.volume = 0.4;
     bgAudio.play().catch(()=>{});
   }
+     // إيقاف الموسيقى عند الانتقال للصفحة الجديدة
+  bgAudio.pause();
   startGame();
 }
 
@@ -123,5 +125,6 @@
 </script>
 </body>
 </html>
+
 
 
