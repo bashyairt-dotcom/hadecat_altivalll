@@ -347,7 +347,7 @@ function handleDrop(box, shape, color){
 function showLevelCompleted(){
   const next = currentLevelIndex + 1;
   popup.innerHTML = `
-    <video id="clapVideo" class="clap-video" playsinline controls>
+    <video id="clapVideo" class="clap-video" autoplay playsinline>
       <source src="${clapVideo}" type="video/mp4">
       متصفحك لا يدعم تشغيل الفيديو.
     </video>
@@ -398,5 +398,6 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
