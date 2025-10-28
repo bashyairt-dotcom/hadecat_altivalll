@@ -313,14 +313,24 @@ targets.appendChild(box);
 
 function showLevelCompleted(){
 const next=currentLevelIndex+1;
-popup.innerHTML=`<h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
-<p>النقاط: <strong>${score}</strong></p>`;
-if(next<LEVELS.length) popup.innerHTML+=`<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
-else popup.innerHTML+=`<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;
+popup.innerHTML=`
+<img src="clap.gif" class="clap-gif" alt="تصفيق">
+<h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
+<p>النقاط: <strong>${score}</strong></p>
+`;
+if(next<LEVELS.length){popup.innerHTML+=`<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;}
+else{popup.innerHTML+=`<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;}
 popup.classList.remove('hidden');
-if(next<LEVELS.length) document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden'); initLevel(next);};
-else document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden'); initLevel(0);};
+const clapImg=popup.querySelector('.clap-gif');
+clapImg.addEventListener('load',()=>playCorrect());
+
+if(next<LEVELS.length){
+document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden'); initLevel(next);};
+}else{
+document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden'); initLevel(0);};
 }
+}
+
 
 // === أزرار التحكم ===
 document.getElementById('restart').onclick=()=>initLevel(0);
@@ -329,5 +339,6 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
