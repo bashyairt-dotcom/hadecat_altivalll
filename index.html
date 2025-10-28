@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لعبة مطابقة الأشكال</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffb703, #fb8500, #8ecae6);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: "Comic Sans MS", sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2.3em;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px #00000050;
+    }
+    button {
+      background-color: #06d6a0;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.2em;
+      border-radius: 25px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background-color: #118ab2;
+    }
+  </style>
+</head>
+<body>
+  <h1>مرحباً بكم في 🎨 لعبة مطابقة الأشكال 🎯</h1>
+  <button onclick="startGame()">ابدأ اللعب 🎮</button>
+
+  <script>
+    function startGame() {
+      const win = window.open('game.html', '_blank');
+      if (win) {
+        win.focus();
+        win.document.body.requestFullscreen?.();
+      }
+    }
+  </script>
+</body>
+</html>
