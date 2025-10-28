@@ -346,14 +346,11 @@ function handleDrop(box, shape, color){
 
 function showLevelCompleted(){
   const next = currentLevelIndex + 1;
-  popup.innerHTML = `
-    <video id="clapVideo" class="clap-video" autoplay playsinline>
-      <source src="${clapVideo}" type="video/mp4">
-      متصفحك لا يدعم تشغيل الفيديو.
-    </video>
-    <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
-    <p>النقاط: <strong>${score}</strong></p>
-  `;
+popup.innerHTML = `
+  <img src="clap.gif" class="clap-video" alt="تصفيق رائع" />
+  <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
+  <p>النقاط: <strong>${score}</strong></p>
+`;
 
   if(next < LEVELS.length){
     popup.innerHTML += `<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
@@ -398,6 +395,7 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
 
