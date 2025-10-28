@@ -210,8 +210,8 @@ small{color:#666;}
 
 <script>
 // === الأصوات المضمنة ===
-const soundCorrect = new Audio("data:audio/mpeg;base64,//UklGRiQAAABXQVZFZm10IBAAAAABAAEA..."); // صوت صحيح
-const soundWrong = new Audio("data:audio/mpeg;base64,//UklGRiQAAABXQVZFZm10IBAAAAABAAEA..."); // صوت خطأ
+const soundCorrect = new Audio("correctt.mp3"); // صوت صحيح
+const soundWrong = new Audio("worong.mp3");    // صوت خطأ
 
 const LEVELS=[
 {name:'سهل',count:3},
@@ -258,15 +258,17 @@ item.addEventListener('dragend',()=>item.classList.remove('hidden'));
 // === التعامل مع السقوط ===
 function handleDrop(box,shape,color){
 const item=[...tray.children].find(el=>el.dataset.shape===shape);
-if(!item) return;
 if(box.dataset.accept===shape){
-score+=10; scoreEl.textContent=score;
-soundCorrect.currentTime=0; soundCorrect.play();
-box.innerHTML=createShapeSVG(shape,color);
-item.remove();
-if(tray.children.length===0) setTimeout(showLevelCompleted,500);
+    score+=10;
+    scoreEl.textContent=score;
+    soundCorrect.currentTime=0;
+    soundCorrect.play(); // ✅ تشغيل الصوت الصحيح
+    box.innerHTML=createShapeSVG(shape,color);
+    item.remove();
+    if(tray.children.length===0) setTimeout(showLevelCompleted,500);
 }else{
-soundWrong.currentTime=0; soundWrong.play();
+    soundWrong.currentTime=0;
+    soundWrong.play(); // ❌ تشغيل الصوت الخطأ
 }
 }
 
@@ -327,3 +329,4 @@ initLevel(0);
 </script>
 </body>
 </html>
+
