@@ -5,45 +5,188 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>لعبة مطابقة الأشكال - نسخة أطفال</title>
   <style>
-    :root{--bg:#fff8f0;--card:#ffffff;--accent:#ff6b6b;--accent2:#ffd93d;--accent3:#66cc66}
-    *{box-sizing:border-box}
-    body{font-family:Tahoma, Arial, sans-serif;background:linear-gradient(180deg,#fff8f0 0%, #fefefe 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:18px}
-    .game{width:980px;max-width:980px;background:var(--card);box-shadow:0 14px 40px rgba(0,0,0,.08);border-radius:20px;padding:18px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    h1{font-size:24px;margin:0;color:#333}
-    .controls{display:flex;gap:10px;align-items:center}
-    button{background:linear-gradient(180deg,rgba(0,0,0,0.06),transparent);border:none;padding:8px 12px;border-radius:12px;cursor:pointer;font-weight:700}
-    .play-btn{background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:14px;cursor:pointer}
-    .board{display:flex;gap:18px;margin-top:14px}
-    .tray, .targets{flex:1;padding:14px;border-radius:14px;background:linear-gradient(180deg,#fff,#fff4f0);min-height:380px}
-    .tray{display:flex;gap:12px;flex-wrap:wrap;align-content:flex-start;justify-content:center;padding-top:18px}
-    .draggable{width:100px;height:100px;border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:grab;background:#fff;box-shadow:0 10px 20px rgba(0,0,0,.06);flex-direction:column}
-    .draggable:active{cursor:grabbing}
-    .shape{width:64px;height:64px}
-    .targets{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center}
-    .target{width:160px;height:120px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#fffbf7);border:2px dashed rgba(0,0,0,.06);position:relative}
-    .target.highlight{box-shadow:0 6px 18px rgba(43,108,176,.08);transform:scale(1.02);transition:transform .14s}
-    .meta{display:flex;gap:12px;align-items:center}
-    .badge{padding:6px 10px;border-radius:12px;background:#fff8ea;border:1px solid rgba(0,0,0,.03);font-weight:700}
-    .level-name{font-weight:800;color:#222}
-    .score{font-weight:800;color:#222}
-    .footer{margin-top:12px;text-align:center;color:#444}
-    small{color:#666}
-    .hidden{display:none}
-    .center-row{display:flex;gap:8px;align-items:center}
-    .big-msg{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#fff,#fffaf0);padding:18px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.14);text-align:center;z-index:60}
-    video.clap-video{width:220px;height:auto;border-radius:12px;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);}
-    img.logo{height:80px;width:80px;object-fit:contain;margin-top:6px}
-    @media (max-width:980px){.game{width:95%}.board{flex-direction:column-reverse}.targets{flex-direction:row;flex-wrap:wrap}}
+    :root {
+      --bg: #fff8f0;
+      --card: #ffffff;
+      --accent: #ff6b6b;
+      --accent2: #ffd93d;
+      --accent3: #66cc66;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      background: linear-gradient(180deg, #fff8f0 0%, #fefefe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 18px;
+    }
+
+    .game {
+      width: 980px;
+      max-width: 980px;
+      background: var(--card);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .08);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0;
+      color: #333;
+    }
+
+    .controls { display: flex; gap: 10px; align-items: center; }
+    button {
+      background: linear-gradient(180deg, rgba(0,0,0,0.06), transparent);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .play-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .board { display: flex; gap: 18px; margin-top: 14px; }
+    .tray, .targets {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #fff4f0);
+      min-height: 380px;
+    }
+
+    .tray {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: center;
+      padding-top: 18px;
+    }
+
+    .draggable {
+      width: 100px;
+      height: 100px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .06);
+      flex-direction: column;
+    }
+
+    .draggable:active { cursor: grabbing; }
+
+    .shape { width: 64px; height: 64px; }
+
+    .targets {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .target {
+      width: 160px;
+      height: 120px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #fff, #fffbf7);
+      border: 2px dashed rgba(0, 0, 0, .06);
+      position: relative;
+    }
+
+    .target.highlight {
+      box-shadow: 0 6px 18px rgba(43,108,176,.08);
+      transform: scale(1.02);
+      transition: transform .14s;
+    }
+
+    .meta { display: flex; gap: 12px; align-items: center; }
+    .badge {
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: #fff8ea;
+      border: 1px solid rgba(0, 0, 0, .03);
+      font-weight: 700;
+    }
+
+    .level-name, .score { font-weight: 800; color: #222; }
+
+    .footer { margin-top: 12px; text-align: center; color: #444; }
+    small { color: #666; }
+    .hidden { display: none; }
+
+    .big-msg {
+      position: fixed;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(180deg, #fff, #fffaf0);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .14);
+      text-align: center;
+      z-index: 60;
+    }
+
+    video.clap-video {
+      width: 220px;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    img.logo {
+      height: 80px;
+      width: 80px;
+      object-fit: contain;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 980px) {
+      .game { width: 95%; }
+      .board { flex-direction: column-reverse; }
+      .targets { flex-direction: row; flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
   <div class="game" role="application" aria-label="لعبة مطابقة الأشكال - للأطفال">
     <header>
       <div>
-        <h1>لعبة مطابقة الأشكال — للأطفال 🎈</h1>
-        <img src="logo.png" class="logo">
-        <div style="font-size:13px;color:#666">نسخة ألوان: أحمر - أصفر - أخضر، مع مستويات وموسيقى خفيفة.</div>
+        <h1>🎨 لعبة مطابقة الأشكال — للأطفال 🎈</h1>
+        <img src="logo.png" class="logo" alt="شعار اللعبة">
+        <div style="font-size:13px;color:#666">
+          نسخة الألوان: أحمر - أصفر - أخضر 🌈 مع موسيقى ومراحل ممتعة.
+        </div>
       </div>
 
       <div class="controls">
@@ -52,7 +195,7 @@
           <div class="badge score">النقاط: <span id="score">0</span></div>
         </div>
         <button id="restart">إعادة</button>
-        <button id="musicToggle" class="play-btn">تشغيل الموسيقى</button>
+        <button id="musicToggle" class="play-btn">تشغيل الموسيقى 🎵</button>
       </div>
     </header>
 
@@ -61,205 +204,9 @@
       <section class="targets" id="targets" aria-label="المربعات المستهدفة"></section>
     </div>
 
-    <div class="footer"><small>اسحب الشكل وضعه على المربع المتطابق. بعد إكمال مستوى ستحصل على مستوى أصعب.</small></div>
+    <div class="footer">
+      <small>اسحب الشكل وضعه على المربع المتطابق. بعد الفوز يظهر فيديو 👏</small>
+    </div>
   </div>
 
-  <div id="popup" class="big-msg hidden" role="dialog" aria-live="polite"></div>
-
-<script>
-const LEVELS = [
-  {name: 'سهل', count: 3},
-  {name: 'متوسط', count: 6},
-  {name: 'صعب', count: 9}
-];
-const COLORS = ['#ff4d4d','#ffd23f','#66cc66'];
-const SHAPES = ['triangle','square','circle','star','hexagon','heart','diamond','moon','cross'];
-
-const tray = document.getElementById('tray');
-const targets = document.getElementById('targets');
-const scoreEl = document.getElementById('score');
-const levelNameEl = document.getElementById('levelName');
-const popup = document.getElementById('popup');
-
-let score = 0;
-let currentLevelIndex = 0;
-let musicOn = false;
-
-const clapVideo = "clap_video.mp4"; // ← ضع اسم الفيديو هنا
-
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx = null;
-let musicNodes = [];
-
-// موسيقى خلفية بسيطة
-function startMusic(){
-  if(!AudioContext) return;
-  if(!audioCtx) audioCtx = new AudioContext();
-  const master = audioCtx.createGain();
-  master.gain.value = 0.06;
-  master.connect(audioCtx.destination);
-  const melody = [523.25,659.25,783.99,1046.5];
-  musicNodes = melody.map((freq,i)=>{
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type='sine'; osc.frequency.value=freq;
-    g.gain.value=0;
-    osc.connect(g); g.connect(master); osc.start();
-    return {osc,g};
-  });
-  let t=0;
-  function playStep(){
-    if(!musicOn) return;
-    musicNodes.forEach((n,i)=>{
-      const when=audioCtx.currentTime+0.02+i*0.18+t*0.01;
-      n.gain.cancelScheduledValues(when);
-      n.gain.setValueAtTime(0,when);
-      n.gain.linearRampToValueAtTime(0.08,when+0.02);
-      n.gain.linearRampToValueAtTime(0,when+0.18);
-    });
-    t++;
-    setTimeout(()=>{if(musicOn) playStep();},600);
-  }
-  musicOn=true; playStep();
-}
-
-function stopMusic(){ musicOn=false; if(musicNodes && audioCtx){musicNodes.forEach(n=>{n.gain.cancelScheduledValues(0);});} }
-
-function playCelebration(){
-  if(!AudioContext) return;
-  if(!audioCtx) audioCtx = new AudioContext();
-  for(let i=0;i<5;i++){
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type='square';
-    o.frequency.value=600+Math.random()*200;
-    g.gain.value=0.001;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(audioCtx.currentTime+i*0.1);
-    g.gain.exponentialRampToValueAtTime(0.08,audioCtx.currentTime+i*0.1+0.05);
-    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+i*0.1+0.15);
-    o.stop(audioCtx.currentTime+i*0.1+0.2);
-  }
-}
-
-function createShapeSVG(type,color){
-  const shapes = {
-    triangle:`<polygon points="50,12 90,88 10,88" fill="${color}"/>`,
-    square:`<rect x="18" y="18" width="64" height="64" rx="10" fill="${color}"/>`,
-    circle:`<circle cx="50" cy="50" r="28" fill="${color}"/>`,
-    star:`<path d="M50 10 L61 40 H95 L67 58 L78 90 L50 70 L22 90 L33 58 L5 40 H39z" fill="${color}"/>`,
-    hexagon:`<polygon points="50,10 78,30 78,70 50,90 22,70 22,30" fill="${color}"/>`,
-    heart:`<path d="M50 76 L18 44 A14 14 0 0 1 50 22 A14 14 0 0 1 82 44z" fill="${color}"/>`,
-    diamond:`<polygon points="50,8 82,50 50,92 18,50" fill="${color}"/>`,
-    moon:`<path d="M60 80 A32 32 0 1 1 60 16 A22 22 0 0 0 60 80z" fill="${color}"/>`,
-    cross:`<path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${color}"/>`
-  };
-  return `<svg class="shape" viewBox="0 0 100 100">${shapes[type]}</svg>`;
-}
-
-function makeDraggable(item){
-  item.draggable=true;
-  item.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain',item.dataset.shape+'::'+item.dataset.color); setTimeout(()=>item.classList.add('hidden'),10); });
-  item.addEventListener('dragend', ()=> item.classList.remove('hidden'));
-}
-
-function initLevel(index){
-  currentLevelIndex=index;
-  const level=LEVELS[index];
-  levelNameEl.textContent=level.name;
-  score=0; scoreEl.textContent=score;
-  tray.innerHTML=''; targets.innerHTML='';
-
-  const shapesToUse=SHAPES.slice(0,level.count);
-  const targetsOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
-  const trayOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
-
-  trayOrder.forEach((s,i)=>{
-    const d=document.createElement('div');
-    d.className='draggable';
-    d.dataset.shape=s;
-    const color=COLORS[i%COLORS.length];
-    d.dataset.color=color;
-    d.innerHTML=createShapeSVG(s,color)+`<div style="font-size:12px;margin-top:6px;color:#333;font-weight:700;text-transform:capitalize">${s}</div>`;
-    tray.appendChild(d);
-    makeDraggable(d);
-  });
-
-  targetsOrder.forEach((t)=>{
-    const box=document.createElement('div');
-    box.className='target';
-    box.dataset.accept=t;
-    box.innerHTML=`<div style="text-align:center">${createShapeSVG(t,'#f0f0f0')}<div style="font-size:14px;margin-top:8px;color:#666">وضع ${t} هنا</div></div>`;
-    box.addEventListener('dragover', e=>{ e.preventDefault(); box.classList.add('highlight'); });
-    box.addEventListener('dragleave', ()=> box.classList.remove('highlight'));
-    box.addEventListener('drop', e=>{
-      e.preventDefault(); box.classList.remove('highlight');
-      const [shape,color]=e.dataTransfer.getData('text/plain').split('::');
-      handleDrop(box,shape,color);
-    });
-    targets.appendChild(box);
-  });
-}
-
-function handleDrop(box,shape,color){
-  const item=[...tray.children].find(el=>el.dataset.shape===shape);
-  if(!item) return;
-  if(box.dataset.accept===shape){
-    score+=10; scoreEl.textContent=score;
-    playCelebration();
-    box.innerHTML=createShapeSVG(shape,color)+'<div style="font-size:13px;color:#1a202c;font-weight:800;margin-top:6px;">مطابق! 🎉</div>';
-    item.remove();
-    if(tray.children.length===0) setTimeout(showLevelCompleted,500);
-  }
-}
-
-// ✅ عرض الفيديو بعد كل مرحلة
-function showLevelCompleted(){
-  const next=currentLevelIndex+1;
-  playCelebration();
-
-  popup.innerHTML=`
-    <div style="text-align:center">
-      <video class="clap-video" autoplay muted playsinline>
-        <source src="${clapVideo}" type="video/mp4">
-      </video>
-      <h2>مبروك! 🎉</h2>
-      <div>نقاطك: <strong>${score}</strong></div>
-    </div>
-  `;
-
-  if(next<LEVELS.length){
-    popup.innerHTML+=`
-      <div style="margin-top:8px">
-        <button id="nextLevel" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">التالي</button>
-        <button id="replayLevel" style="padding:8px 12px;border-radius:10px;border:none;background:#eee;color:#333;margin-right:8px">إعادة</button>
-      </div>`;
-  } else {
-    popup.innerHTML+=`
-      <div style="margin-top:8px">
-        <button id="replayAll" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">إعادة اللعبة</button>
-      </div>`;
-  }
-
-  popup.classList.remove('hidden');
-
-  if(next<LEVELS.length){
-    document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden');initLevel(next)};
-    document.getElementById('replayLevel').onclick=()=>{popup.classList.add('hidden');initLevel(currentLevelIndex)};
-  } else {
-    document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden');initLevel(0)};
-  }
-}
-
-document.getElementById('restart').onclick=()=>initLevel(0);
-document.getElementById('musicToggle').onclick=async()=>{
-  if(!audioCtx) audioCtx=new AudioContext();
-  if(!musicOn){await audioCtx.resume();startMusic();musicOn=true;event.target.textContent='إيقاف الموسيقى';}
-  else{stopMusic();musicOn=false;event.target.textContent='تشغيل الموسيقى';}
-};
-
-initLevel(0);
-</script>
-</body>
-</html>
-
+  <div id="popup" class="b
