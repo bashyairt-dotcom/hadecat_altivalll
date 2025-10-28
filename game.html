@@ -346,11 +346,11 @@ function handleDrop(box, shape, color){
 
 function showLevelCompleted(){
   const next = currentLevelIndex + 1;
-popup.innerHTML = `
-  <img src="clap.gif" class="clap-video" alt="تصفيق رائع" />
-  <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
-  <p>النقاط: <strong>${score}</strong></p>
-`;
+  popup.innerHTML = `
+    <img src="clap.gif" class="clap-video" alt="تصفيق" />
+    <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
+    <p>النقاط: <strong>${score}</strong></p>
+  `;
 
   if(next < LEVELS.length){
     popup.innerHTML += `<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
@@ -360,20 +360,23 @@ popup.innerHTML = `
 
   popup.classList.remove('hidden');
 
-  // تشغيل الفيديو بالصوت بعد ظهور الرسالة
-  const video = document.getElementById('clapVideo');
-  video.volume = 1.0;
-  video.play().catch(() => {
-    // لو المتصفح منع التشغيل التلقائي، نفعّله بالزر
-    video.setAttribute('controls', true);
-  });
+  // تشغيل صوت النجاح
+  playCelebration();
 
+  // تفعيل الأزرار
   if(next < LEVELS.length){
-    document.getElementById('nextLevel').onclick = () => { popup.classList.add('hidden'); initLevel(next); };
+    document.getElementById('nextLevel').onclick = () => {
+      popup.classList.add('hidden');
+      initLevel(next);
+    };
   } else {
-    document.getElementById('replayAll').onclick = () => { popup.classList.add('hidden'); initLevel(0); };
+    document.getElementById('replayAll').onclick = () => {
+      popup.classList.add('hidden');
+      initLevel(0);
+    };
   }
 }
+
 
 
 // أزرار التحكم
@@ -395,6 +398,7 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
 
