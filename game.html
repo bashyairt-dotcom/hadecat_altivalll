@@ -347,8 +347,9 @@ function handleDrop(box, shape, color){
 function showLevelCompleted(){
   const next = currentLevelIndex + 1;
   popup.innerHTML = `
-    <video class="clap-video" autoplay muted playsinline>
+    <video id="clapVideo" class="clap-video" playsinline controls>
       <source src="${clapVideo}" type="video/mp4">
+      متصفحك لا يدعم تشغيل الفيديو.
     </video>
     <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
     <p>النقاط: <strong>${score}</strong></p>
@@ -362,12 +363,21 @@ function showLevelCompleted(){
 
   popup.classList.remove('hidden');
 
+  // تشغيل الفيديو بالصوت بعد ظهور الرسالة
+  const video = document.getElementById('clapVideo');
+  video.volume = 1.0;
+  video.play().catch(() => {
+    // لو المتصفح منع التشغيل التلقائي، نفعّله بالزر
+    video.setAttribute('controls', true);
+  });
+
   if(next < LEVELS.length){
     document.getElementById('nextLevel').onclick = () => { popup.classList.add('hidden'); initLevel(next); };
   } else {
     document.getElementById('replayAll').onclick = () => { popup.classList.add('hidden'); initLevel(0); };
   }
 }
+
 
 // أزرار التحكم
 document.getElementById('restart').onclick = () => initLevel(0);
@@ -388,4 +398,5 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
