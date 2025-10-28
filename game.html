@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>لعبة مطابقة الأشكال - نسخة أطفال</title>
+  <title>🎨 لعبة مطابقة الأشكال - روضة حديقة الطفل النموذجية</title>
   <style>
     :root {
       --bg: #fff8f0;
@@ -16,8 +16,8 @@
     * { box-sizing: border-box; }
 
     body {
-      font-family: Tahoma, Arial, sans-serif;
-      background: linear-gradient(180deg, #fff8f0 0%, #fefefe 100%);
+      font-family: "Comic Sans MS", Tahoma, sans-serif;
+      background: linear-gradient(180deg,#fff8f0 0%, #fefefe 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -30,9 +30,10 @@
       width: 980px;
       max-width: 980px;
       background: var(--card);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, .08);
+      box-shadow: 0 14px 40px rgba(0,0,0,.08);
       border-radius: 20px;
       padding: 18px;
+      position: relative;
     }
 
     header {
@@ -48,9 +49,14 @@
       color: #333;
     }
 
-    .controls { display: flex; gap: 10px; align-items: center; }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
     button {
-      background: linear-gradient(180deg, rgba(0,0,0,0.06), transparent);
+      background: linear-gradient(180deg,rgba(0,0,0,0.06),transparent);
       border: none;
       padding: 8px 12px;
       border-radius: 12px;
@@ -67,12 +73,17 @@
       cursor: pointer;
     }
 
-    .board { display: flex; gap: 18px; margin-top: 14px; }
+    .board {
+      display: flex;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
     .tray, .targets {
       flex: 1;
       padding: 14px;
       border-radius: 14px;
-      background: linear-gradient(180deg, #fff, #fff4f0);
+      background: linear-gradient(180deg,#fff,#fff4f0);
       min-height: 380px;
     }
 
@@ -94,13 +105,19 @@
       justify-content: center;
       cursor: grab;
       background: #fff;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, .06);
+      box-shadow: 0 10px 20px rgba(0,0,0,.06);
       flex-direction: column;
+      transition: transform .2s;
     }
 
-    .draggable:active { cursor: grabbing; }
+    .draggable:hover {
+      transform: scale(1.08);
+    }
 
-    .shape { width: 64px; height: 64px; }
+    .shape {
+      width: 64px;
+      height: 64px;
+    }
 
     .targets {
       display: flex;
@@ -117,30 +134,44 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg, #fff, #fffbf7);
-      border: 2px dashed rgba(0, 0, 0, .06);
+      background: linear-gradient(180deg,#fff,#fffbf7);
+      border: 2px dashed rgba(0,0,0,.06);
       position: relative;
+      transition: all .2s;
     }
 
     .target.highlight {
       box-shadow: 0 6px 18px rgba(43,108,176,.08);
       transform: scale(1.02);
-      transition: transform .14s;
     }
 
-    .meta { display: flex; gap: 12px; align-items: center; }
+    .meta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
     .badge {
       padding: 6px 10px;
       border-radius: 12px;
       background: #fff8ea;
-      border: 1px solid rgba(0, 0, 0, .03);
+      border: 1px solid rgba(0,0,0,.03);
       font-weight: 700;
     }
 
-    .level-name, .score { font-weight: 800; color: #222; }
+    .level-name, .score {
+      font-weight: 800;
+      color: #222;
+    }
 
-    .footer { margin-top: 12px; text-align: center; color: #444; }
+    .footer {
+      margin-top: 12px;
+      text-align: center;
+      color: #444;
+    }
+
     small { color: #666; }
+
     .hidden { display: none; }
 
     .big-msg {
@@ -148,20 +179,20 @@
       left: 50%;
       top: 40%;
       transform: translate(-50%, -50%);
-      background: linear-gradient(180deg, #fff, #fffaf0);
+      background: linear-gradient(180deg,#fff,#fffaf0);
       padding: 18px;
       border-radius: 14px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, .14);
+      box-shadow: 0 18px 40px rgba(0,0,0,.14);
       text-align: center;
       z-index: 60;
     }
 
     video.clap-video {
-      width: 220px;
+      width: 260px;
       height: auto;
       border-radius: 12px;
       margin-bottom: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
 
     img.logo {
@@ -171,7 +202,7 @@
       margin-top: 6px;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width:980px) {
       .game { width: 95%; }
       .board { flex-direction: column-reverse; }
       .targets { flex-direction: row; flex-wrap: wrap; }
@@ -179,14 +210,12 @@
   </style>
 </head>
 <body>
-  <div class="game" role="application" aria-label="لعبة مطابقة الأشكال - للأطفال">
+  <div class="game" role="application" aria-label="لعبة مطابقة الأشكال للأطفال">
     <header>
       <div>
-        <h1>🎨 لعبة مطابقة الأشكال — للأطفال 🎈</h1>
-        <img src="logo.png" class="logo" alt="شعار اللعبة">
-        <div style="font-size:13px;color:#666">
-          نسخة الألوان: أحمر - أصفر - أخضر 🌈 مع موسيقى ومراحل ممتعة.
-        </div>
+        <h1>🌼 لعبة مطابقة الأشكال — روضة حديقة الطفل النموذجية 🎈</h1>
+        <img src="logo.png" class="logo" alt="شعار الروضة">
+        <div style="font-size:13px;color:#666">ألوان جميلة وموسيقى ممتعة لتعليم الأطفال بطريقة مرحة 💛</div>
       </div>
 
       <div class="controls">
@@ -195,18 +224,168 @@
           <div class="badge score">النقاط: <span id="score">0</span></div>
         </div>
         <button id="restart">إعادة</button>
-        <button id="musicToggle" class="play-btn">تشغيل الموسيقى 🎵</button>
+        <button id="musicToggle" class="play-btn">تشغيل الموسيقى</button>
       </div>
     </header>
 
     <div class="board">
-      <section class="tray" id="tray" aria-label="الأشكال المتاحة"></section>
-      <section class="targets" id="targets" aria-label="المربعات المستهدفة"></section>
+      <section class="tray" id="tray"></section>
+      <section class="targets" id="targets"></section>
     </div>
 
-    <div class="footer">
-      <small>اسحب الشكل وضعه على المربع المتطابق. بعد الفوز يظهر فيديو 👏</small>
-    </div>
+    <div class="footer"><small>🎯 اسحب الشكل وضعه في المكان الصحيح. عند النجاح، ستحصل على فيديو تصفيق! 👏</small></div>
   </div>
 
-  <div id="popup" class="b
+  <div id="popup" class="big-msg hidden"></div>
+
+  <!-- موسيقى خلفية -->
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2023/04/18/audio_7b4cc2f444.mp3?filename=happy-background-music-145990.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+const LEVELS = [
+  {name: 'سهل', count: 3},
+  {name: 'متوسط', count: 6},
+  {name: 'صعب', count: 9}
+];
+const COLORS = ['#ff4d4d','#ffd23f','#66cc66'];
+const SHAPES = ['triangle','square','circle','star','hexagon','heart','diamond','moon','cross'];
+
+const tray = document.getElementById('tray');
+const targets = document.getElementById('targets');
+const scoreEl = document.getElementById('score');
+const levelNameEl = document.getElementById('levelName');
+const popup = document.getElementById('popup');
+const bgMusic = document.getElementById('bgMusic');
+
+let score = 0;
+let currentLevelIndex = 0;
+let musicOn = false;
+
+// فيديو التصفيق
+const clapVideo = "https://cdn.pixabay.com/download/video/2021/08/04/84858-578789103_tiny.mp4?filename=applause-84858.mp4";
+
+function playCelebration() {
+  const audio = new Audio("https://cdn.pixabay.com/download/audio/2021/09/16/audio_7d0222f508.mp3?filename=success-fanfare-trumpets-6185.mp3");
+  audio.play();
+}
+
+function initLevel(index) {
+  currentLevelIndex = index;
+  const level = LEVELS[index];
+  levelNameEl.textContent = level.name;
+  score = 0; scoreEl.textContent = score;
+  tray.innerHTML = ''; targets.innerHTML = '';
+
+  const shapesToUse = SHAPES.slice(0, level.count);
+  const targetsOrder = shapesToUse.slice().sort(() => Math.random() - 0.5);
+  const trayOrder = shapesToUse.slice().sort(() => Math.random() - 0.5);
+
+  trayOrder.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'draggable';
+    d.dataset.shape = s;
+    const color = COLORS[i % COLORS.length];
+    d.dataset.color = color;
+    d.innerHTML = createShapeSVG(s, color);
+    tray.appendChild(d);
+    makeDraggable(d);
+  });
+
+  targetsOrder.forEach((t) => {
+    const box = document.createElement('div');
+    box.className = 'target';
+    box.dataset.accept = t;
+    box.innerHTML = `<div>${createShapeSVG(t,'#f0f0f0')}</div>`;
+    box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('highlight'); });
+    box.addEventListener('dragleave', () => box.classList.remove('highlight'));
+    box.addEventListener('drop', e => {
+      e.preventDefault(); box.classList.remove('highlight');
+      const [shape, color] = e.dataTransfer.getData('text/plain').split('::');
+      handleDrop(box, shape, color);
+    });
+    targets.appendChild(box);
+  });
+}
+
+function createShapeSVG(type,color){
+  const shapes = {
+    triangle:`<polygon points="50,12 90,88 10,88" fill="${color}"/>`,
+    square:`<rect x="18" y="18" width="64" height="64" rx="10" fill="${color}"/>`,
+    circle:`<circle cx="50" cy="50" r="28" fill="${color}"/>`,
+    star:`<path d="M50 10 L61 40 H95 L67 58 L78 90 L50 70 L22 90 L33 58 L5 40 H39z" fill="${color}"/>`,
+    hexagon:`<polygon points="50,10 78,30 78,70 50,90 22,70 22,30" fill="${color}"/>`,
+    heart:`<path d="M50 76 L18 44 A14 14 0 0 1 50 22 A14 14 0 0 1 82 44z" fill="${color}"/>`,
+    diamond:`<polygon points="50,8 82,50 50,92 18,50" fill="${color}"/>`,
+    moon:`<path d="M60 80 A32 32 0 1 1 60 16 A22 22 0 0 0 60 80z" fill="${color}"/>`,
+    cross:`<path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${color}"/>`
+  };
+  return `<svg class="shape" viewBox="0 0 100 100">${shapes[type]}</svg>`;
+}
+
+function makeDraggable(item){
+  item.draggable = true;
+  item.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', item.dataset.shape + '::' + item.dataset.color);
+    setTimeout(() => item.classList.add('hidden'), 10);
+  });
+  item.addEventListener('dragend', () => item.classList.remove('hidden'));
+}
+
+function handleDrop(box, shape, color){
+  const item = [...tray.children].find(el => el.dataset.shape === shape);
+  if (!item) return;
+  if (box.dataset.accept === shape){
+    score += 10; scoreEl.textContent = score;
+    playCelebration();
+    box.innerHTML = createShapeSVG(shape, color);
+    item.remove();
+    if (tray.children.length === 0) setTimeout(showLevelCompleted, 500);
+  }
+}
+
+function showLevelCompleted(){
+  const next = currentLevelIndex + 1;
+  popup.innerHTML = `
+    <video class="clap-video" autoplay muted playsinline>
+      <source src="${clapVideo}" type="video/mp4">
+    </video>
+    <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
+    <p>النقاط: <strong>${score}</strong></p>
+  `;
+
+  if(next < LEVELS.length){
+    popup.innerHTML += `<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
+  } else {
+    popup.innerHTML += `<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;
+  }
+
+  popup.classList.remove('hidden');
+
+  if(next < LEVELS.length){
+    document.getElementById('nextLevel').onclick = () => { popup.classList.add('hidden'); initLevel(next); };
+  } else {
+    document.getElementById('replayAll').onclick = () => { popup.classList.add('hidden'); initLevel(0); };
+  }
+}
+
+// أزرار التحكم
+document.getElementById('restart').onclick = () => initLevel(0);
+document.getElementById('musicToggle').onclick = () => {
+  if (!musicOn){
+    bgMusic.volume = 0.4;
+    bgMusic.play();
+    musicOn = true;
+    musicToggle.textContent = 'إيقاف الموسيقى';
+  } else {
+    bgMusic.pause();
+    musicOn = false;
+    musicToggle.textContent = 'تشغيل الموسيقى';
+  }
+};
+
+initLevel(0);
+</script>
+</body>
+</html>
