@@ -380,13 +380,17 @@ function showLevelCompleted(){
 
 
 // أزرار التحكم
-document.getElementById('restart').onclick = () => initLevel(0);
-document.getElementById('musicToggle').onclick = () => {
+const musicToggle = document.getElementById('musicToggle');
+musicToggle.onclick = () => {
   if (!musicOn){
     bgMusic.volume = 0.4;
-    bgMusic.play();
-    musicOn = true;
-    musicToggle.textContent = 'إيقاف الموسيقى';
+    bgMusic.play().then(() => {
+      musicOn = true;
+      musicToggle.textContent = 'إيقاف الموسيقى';
+    }).catch(err => {
+      console.log("🚫 المتصفح رفض التشغيل التلقائي:", err);
+      alert("🎵 اضغطي مرة ثانية لتشغيل الموسيقى، المتصفح رفض التشغيل التلقائي.");
+    });
   } else {
     bgMusic.pause();
     musicOn = false;
@@ -394,10 +398,12 @@ document.getElementById('musicToggle').onclick = () => {
   }
 };
 
+
 initLevel(0);
 </script>
 </body>
 </html>
+
 
 
 
