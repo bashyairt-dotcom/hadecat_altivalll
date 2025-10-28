@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>لعبة مطابقة الأشكال - للأطفال 🎈</title>
+  <title>لعبة مطابقة الأشكال - نسخة أطفال</title>
   <style>
     :root{--bg:#fff8f0;--card:#ffffff;--accent:#ff6b6b;--accent2:#ffd93d;--accent3:#66cc66}
     *{box-sizing:border-box}
@@ -31,15 +31,8 @@
     small{color:#666}
     .hidden{display:none}
     .center-row{display:flex;gap:8px;align-items:center}
-    .big-msg{position:fixed;left:50%;top:45%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#fff,#fffaf0);padding:18px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.14);text-align:center;z-index:60}
-    video.clap-video{
-      width:300px;
-      height:300px;
-      border-radius:20px;
-      margin-bottom:12px;
-      object-fit:cover;
-      box-shadow:0 8px 20px rgba(0,0,0,0.15);
-    }
+    .big-msg{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#fff,#fffaf0);padding:18px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.14);text-align:center;z-index:60}
+    video.clap-video{width:220px;height:auto;border-radius:12px;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);}
     img.logo{height:80px;width:80px;object-fit:contain;margin-top:6px}
     @media (max-width:980px){.game{width:95%}.board{flex-direction:column-reverse}.targets{flex-direction:row;flex-wrap:wrap}}
   </style>
@@ -48,9 +41,9 @@
   <div class="game" role="application" aria-label="لعبة مطابقة الأشكال - للأطفال">
     <header>
       <div>
-        <h1>لعبة مطابقة الأشكال 🎨</h1>
+        <h1>لعبة مطابقة الأشكال — للأطفال 🎈</h1>
         <img src="new_logo.png" class="logo">
-        <div style="font-size:13px;color:#666">اسحب الشكل إلى المكان الصحيح. استمتع بالموسيقى والتصفيق!</div>
+        <div style="font-size:13px;color:#666">نسخة ألوان: أحمر - أصفر - أخضر، مع مستويات وموسيقى خفيفة.</div>
       </div>
 
       <div class="controls">
@@ -64,14 +57,14 @@
     </header>
 
     <div class="board">
-      <section class="tray" id="tray"></section>
-      <section class="targets" id="targets"></section>
+      <section class="tray" id="tray" aria-label="الأشكال المتاحة"></section>
+      <section class="targets" id="targets" aria-label="المربعات المستهدفة"></section>
     </div>
 
-    <div class="footer"><small>بعد كل مستوى سيظهر فيديو تصفيق 🎉</small></div>
+    <div class="footer"><small>اسحب الشكل وضعه على المربع المتطابق. بعد إكمال مستوى ستحصل على مستوى أصعب.</small></div>
   </div>
 
-  <div id="popup" class="big-msg hidden"></div>
+  <div id="popup" class="big-msg hidden" role="dialog" aria-live="polite"></div>
 
 <script>
 const LEVELS = [
@@ -92,12 +85,13 @@ let score = 0;
 let currentLevelIndex = 0;
 let musicOn = false;
 
-const clapVideo = "clap_video.mp4"; // ← ضع اسم الفيديو هنا (يكون في نفس المجلد)
+const clapVideo = "clap_video.mp4"; // ← ضع اسم الفيديو هنا
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
 let musicNodes = [];
 
+// موسيقى خلفية بسيطة
 function startMusic(){
   if(!AudioContext) return;
   if(!audioCtx) audioCtx = new AudioContext();
@@ -128,6 +122,7 @@ function startMusic(){
   }
   musicOn=true; playStep();
 }
+
 function stopMusic(){ musicOn=false; if(musicNodes && audioCtx){musicNodes.forEach(n=>{n.gain.cancelScheduledValues(0);});} }
 
 function playCelebration(){
@@ -185,7 +180,7 @@ function initLevel(index){
     d.dataset.shape=s;
     const color=COLORS[i%COLORS.length];
     d.dataset.color=color;
-    d.innerHTML=createShapeSVG(s,color)+`<div style="font-size:12px;margin-top:6px;color:#333;font-weight:700">${s}</div>`;
+    d.innerHTML=createShapeSVG(s,color)+`<div style="font-size:12px;margin-top:6px;color:#333;font-weight:700;text-transform:capitalize">${s}</div>`;
     tray.appendChild(d);
     makeDraggable(d);
   });
@@ -194,7 +189,7 @@ function initLevel(index){
     const box=document.createElement('div');
     box.className='target';
     box.dataset.accept=t;
-    box.innerHTML=`<div>${createShapeSVG(t,'#f0f0f0')}<div style="font-size:14px;margin-top:8px;color:#666">ضع ${t} هنا</div></div>`;
+    box.innerHTML=`<div style="text-align:center">${createShapeSVG(t,'#f0f0f0')}<div style="font-size:14px;margin-top:8px;color:#666">وضع ${t} هنا</div></div>`;
     box.addEventListener('dragover', e=>{ e.preventDefault(); box.classList.add('highlight'); });
     box.addEventListener('dragleave', ()=> box.classList.remove('highlight'));
     box.addEventListener('drop', e=>{
@@ -218,13 +213,13 @@ function handleDrop(box,shape,color){
   }
 }
 
-// ✅ عرض الفيديو المربع وإغلاقه تلقائياً بعد 3 ثوانٍ
+// ✅ عرض الفيديو بعد كل مرحلة
 function showLevelCompleted(){
   const next=currentLevelIndex+1;
   playCelebration();
 
   popup.innerHTML=`
-    <div>
+    <div style="text-align:center">
       <video class="clap-video" autoplay muted playsinline>
         <source src="${clapVideo}" type="video/mp4">
       </video>
@@ -232,21 +227,35 @@ function showLevelCompleted(){
       <div>نقاطك: <strong>${score}</strong></div>
     </div>
   `;
+
+  if(next<LEVELS.length){
+    popup.innerHTML+=`
+      <div style="margin-top:8px">
+        <button id="nextLevel" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">التالي</button>
+        <button id="replayLevel" style="padding:8px 12px;border-radius:10px;border:none;background:#eee;color:#333;margin-right:8px">إعادة</button>
+      </div>`;
+  } else {
+    popup.innerHTML+=`
+      <div style="margin-top:8px">
+        <button id="replayAll" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">إعادة اللعبة</button>
+      </div>`;
+  }
+
   popup.classList.remove('hidden');
 
-  // يغلق بعد 3 ثوانٍ تلقائياً
-  setTimeout(()=>{
-    popup.classList.add('hidden');
-    if(next < LEVELS.length) initLevel(next);
-    else initLevel(0);
-  }, 3000);
+  if(next<LEVELS.length){
+    document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden');initLevel(next)};
+    document.getElementById('replayLevel').onclick=()=>{popup.classList.add('hidden');initLevel(currentLevelIndex)};
+  } else {
+    document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden');initLevel(0)};
+  }
 }
 
 document.getElementById('restart').onclick=()=>initLevel(0);
-document.getElementById('musicToggle').onclick=async(e)=>{
+document.getElementById('musicToggle').onclick=async()=>{
   if(!audioCtx) audioCtx=new AudioContext();
-  if(!musicOn){await audioCtx.resume();startMusic();musicOn=true;e.target.textContent='إيقاف الموسيقى';}
-  else{stopMusic();musicOn=false;e.target.textContent='تشغيل الموسيقى';}
+  if(!musicOn){await audioCtx.resume();startMusic();musicOn=true;event.target.textContent='إيقاف الموسيقى';}
+  else{stopMusic();musicOn=false;event.target.textContent='تشغيل الموسيقى';}
 };
 
 initLevel(0);
