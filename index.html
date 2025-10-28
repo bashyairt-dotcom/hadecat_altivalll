@@ -7,7 +7,6 @@
   <style>
     body {
       background: linear-gradient(135deg, #ffb703, #fb8500, #8ecae6);
-       <img src="logo.png" alt="لوجو اللعبة" style="height:50px;width:50px;object-fit:contain">
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -38,9 +37,23 @@
       transform: scale(1.1);
       background-color: #118ab2;
     }
+    /* ستايل الشعار */
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-15px); }
+      60% { transform: translateY(-7px); }
+    }
   </style>
 </head>
 <body>
+  <!-- شعار اللعبة -->
+  <img src="logo.png" alt="لوجو اللعبة" class="logo">
+
   <h1>مرحباً بكم في 🎨 لعبة مطابقة الأشكال 🎯</h1>
   <button onclick="startGame()">ابدأ اللعب 🎮</button>
 
@@ -54,5 +67,4 @@
     }
   </script>
 </body>
-
 </html>
