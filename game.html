@@ -258,16 +258,34 @@ const scoreEl = document.getElementById('score');
 const levelNameEl = document.getElementById('levelName');
 const popup = document.getElementById('popup');
 const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
 
 let score = 0;
 let currentLevelIndex = 0;
 let musicOn = false;
 
-// فيديو التصفيق
-const clapVideo = "clap.mp4";
+// 🎵 أصوات
+// موسيقى خلفية من SoundHelix
+bgMusic.innerHTML = `
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+`;
+
+// صوت تصفيق (من Mixkit)
+const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-animated-small-group-applause-523.mp3");
+
+// صوت خطأ (من Mixkit)
+const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3");
+
+// تشغيل صوت النجاح
 function playCelebration() {
-  const audio = new Audio("https://cdn.pixabay.com/download/audio/2021/09/16/audio_7d0222f508.mp3?filename=success-fanfare-trumpets-6185.mp3");
-  audio.play();
+  soundCorrect.currentTime = 0;
+  soundCorrect.play();
+}
+
+// تشغيل صوت الخطأ
+function playWrong() {
+  soundWrong.currentTime = 0;
+  soundWrong.play();
 }
 
 function initLevel(index) {
@@ -341,13 +359,15 @@ function handleDrop(box, shape, color){
     box.innerHTML = createShapeSVG(shape, color);
     item.remove();
     if (tray.children.length === 0) setTimeout(showLevelCompleted, 500);
+  } else {
+    playWrong(); // صوت الخطأ عند التطابق الغلط
   }
 }
 
 function showLevelCompleted(){
   const next = currentLevelIndex + 1;
   popup.innerHTML = `
-    <img src="clap.gif" class="clap-video" alt="تصفيق" />
+    <img src="clap.gif" class="clap-video" alt="تصفيق">
     <h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
     <p>النقاط: <strong>${score}</strong></p>
   `;
@@ -360,27 +380,14 @@ function showLevelCompleted(){
 
   popup.classList.remove('hidden');
 
-  // تشغيل صوت النجاح
-  playCelebration();
-
-  // تفعيل الأزرار
   if(next < LEVELS.length){
-    document.getElementById('nextLevel').onclick = () => {
-      popup.classList.add('hidden');
-      initLevel(next);
-    };
+    document.getElementById('nextLevel').onclick = () => { popup.classList.add('hidden'); initLevel(next); };
   } else {
-    document.getElementById('replayAll').onclick = () => {
-      popup.classList.add('hidden');
-      initLevel(0);
-    };
+    document.getElementById('replayAll').onclick = () => { popup.classList.add('hidden'); initLevel(0); };
   }
 }
 
-
-
-// أزرار التحكم
-const musicToggle = document.getElementById('musicToggle');
+// 🔘 زر الموسيقى
 musicToggle.onclick = () => {
   if (!musicOn){
     bgMusic.volume = 0.4;
@@ -388,8 +395,7 @@ musicToggle.onclick = () => {
       musicOn = true;
       musicToggle.textContent = 'إيقاف الموسيقى';
     }).catch(err => {
-      console.log("🚫 المتصفح رفض التشغيل التلقائي:", err);
-      alert("🎵 اضغطي مرة ثانية لتشغيل الموسيقى، المتصفح رفض التشغيل التلقائي.");
+      alert("🎵 اضغطي مرة ثانية لتشغيل الموسيقى.");
     });
   } else {
     bgMusic.pause();
@@ -398,11 +404,13 @@ musicToggle.onclick = () => {
   }
 };
 
-
+document.getElementById('restart').onclick = () => initLevel(0);
 initLevel(0);
 </script>
+
 </body>
 </html>
+
 
 
 
