@@ -1,46 +1,191 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>🎨 لعبة مطابقة الأشكال - روضة حديقة الطفل النموذجية</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🎨 لعبة مطابقة الأشكال للأطفال</title>
 <style>
-:root {--bg:#fff8f0;--card:#ffffff;--accent:#ff6b6b;--accent2:#ffd93d;--accent3:#66cc66;}
+:root {
+  --bg:#fff8f0;
+  --card:#ffffff;
+  --accent:#ff4d4d;
+  --accent2:#ffd23f;
+  --accent3:#66cc66;
+}
 *{box-sizing:border-box;}
-body{font-family:"Comic Sans MS",Tahoma,sans-serif;background:linear-gradient(180deg,#fff8f0 0%,#fefefe 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:18px;}
-.game{width:980px;max-width:980px;background:var(--card);box-shadow:0 14px 40px rgba(0,0,0,.08);border-radius:20px;padding:18px;position:relative;}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-h1{font-size:24px;margin:0;color:#333;}
-.controls{display:flex;gap:10px;align-items:center;}
-button{background:linear-gradient(180deg,rgba(0,0,0,0.06),transparent);border:none;padding:8px 12px;border-radius:12px;cursor:pointer;font-weight:700;}
-.play-btn{background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:14px;cursor:pointer;}
-.board{display:flex;gap:18px;margin-top:14px;}
-.tray,.targets{flex:1;padding:14px;border-radius:14px;background:linear-gradient(180deg,#fff,#fff4f0);min-height:380px;}
-.tray{display:flex;gap:12px;flex-wrap:wrap;align-content:flex-start;justify-content:center;padding-top:18px;}
-.draggable{width:100px;height:100px;border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:grab;background:#fff;box-shadow:0 10px 20px rgba(0,0,0,.06);flex-direction:column;transition:transform .2s;}
-.draggable:hover{transform:scale(1.08);}
-.shape{width:64px;height:64px;}
-.targets{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;}
-.target{width:160px;height:120px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#fffbf7);border:2px dashed rgba(0,0,0,.06);position:relative;transition:all .2s;}
-.target.highlight{box-shadow:0 6px 18px rgba(43,108,176,.08);transform:scale(1.02);}
-.meta{display:flex;gap:12px;align-items:center;}
-.badge{padding:6px 10px;border-radius:12px;background:#fff8ea;border:1px solid rgba(0,0,0,.03);font-weight:700;}
-.level-name,.score{font-weight:800;color:#222;}
-.footer{margin-top:12px;text-align:center;color:#444;}
+body{
+  font-family:"Comic Sans MS",Tahoma,sans-serif;
+  background:linear-gradient(180deg,#fff8f0 0%, #fefefe 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  margin:0;
+  padding:18px;
+}
+.game{
+  width:980px;
+  max-width:980px;
+  background:var(--card);
+  box-shadow:0 14px 40px rgba(0,0,0,.08);
+  border-radius:20px;
+  padding:18px;
+  position:relative;
+}
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+h1{
+  font-size:28px;
+  margin:0;
+  color:#333;
+}
+.controls{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+button{
+  background:linear-gradient(180deg,rgba(0,0,0,0.06),transparent);
+  border:none;
+  padding:8px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+}
+.play-btn{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:14px;
+  cursor:pointer;
+}
+.board{
+  display:flex;
+  gap:18px;
+  margin-top:14px;
+}
+.tray,.targets{
+  flex:1;
+  padding:14px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#fff,#fff4f0);
+  min-height:380px;
+}
+.tray{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-content:flex-start;
+  justify-content:center;
+  padding-top:18px;
+}
+.draggable{
+  width:100px;
+  height:100px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:grab;
+  background:#fff;
+  box-shadow:0 10px 20px rgba(0,0,0,.06);
+  flex-direction:column;
+  transition: transform .2s;
+}
+.draggable:hover{
+  transform:scale(1.08);
+}
+.shape{
+  width:64px;
+  height:64px;
+}
+.targets{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  align-items:center;
+  justify-content:center;
+}
+.target{
+  width:160px;
+  height:120px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg,#fff,#fffbf7);
+  border:2px dashed rgba(0,0,0,.06);
+  position:relative;
+  transition: all .2s;
+}
+.target.highlight{
+  box-shadow:0 6px 18px rgba(43,108,176,.08);
+  transform:scale(1.02);
+}
+.meta{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.badge{
+  padding:6px 10px;
+  border-radius:12px;
+  background:#fff8ea;
+  border:1px solid rgba(0,0,0,.03);
+  font-weight:700;
+}
+.level-name,.score{
+  font-weight:800;
+  color:#222;
+}
+.footer{
+  margin-top:12px;
+  text-align:center;
+  color:#444;
+}
 small{color:#666;}
 .hidden{display:none;}
-.big-msg{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#fff,#fffaf0);padding:18px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.14);text-align:center;z-index:60;}
-img.logo{height:80px;width:80px;object-fit:contain;margin-top:6px;}
-.clap-gif{width:260px;height:auto;border-radius:12px;margin-bottom:12px;}
-@media (max-width:980px){.game{width:95%;}.board{flex-direction:column-reverse;}.targets{flex-direction:row;flex-wrap:wrap;}}
+.big-msg{
+  position:fixed;
+  left:50%;
+  top:40%;
+  transform:translate(-50%, -50%);
+  background:linear-gradient(180deg,#fff,#fffaf0);
+  padding:18px;
+  border-radius:14px;
+  box-shadow:0 18px 40px rgba(0,0,0,.14);
+  text-align:center;
+  z-index:60;
+}
+.logo{
+  width:120px;
+  height:120px;
+  object-fit:contain;
+  animation: pulse 2s infinite alternate;
+}
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.1) rotate(-5deg);}
+  100%{transform:scale(1) rotate(5deg);}
+}
+@media(max-width:980px){
+  .game{width:95%;}
+  .board{flex-direction:column-reverse;}
+  .targets{flex-direction:row;flex-wrap:wrap;}
+}
 </style>
 </head>
 <body>
 <div class="game" role="application" aria-label="لعبة مطابقة الأشكال للأطفال">
 <header>
 <div>
-<h1>🌼 لعبة مطابقة الأشكال — روضة حديقة الطفل النموذجية 🎈</h1>
-<img src="logo.png" class="logo" alt="شعار الروضة">
+<h1>🌼 لعبة مطابقة الأشكال للأطفال 🎈</h1>
+<img src="" class="logo" alt="شعار اللعبة" id="logo">
 <div style="font-size:13px;color:#666">ألوان جميلة وموسيقى ممتعة لتعليم الأطفال بطريقة مرحة 💛</div>
 </div>
 <div class="controls">
@@ -49,23 +194,30 @@ img.logo{height:80px;width:80px;object-fit:contain;margin-top:6px;}
 <div class="badge score">النقاط: <span id="score">0</span></div>
 </div>
 <button id="restart">إعادة</button>
-<button id="musicToggle" class="play-btn">تشغيل الموسيقى</button>
 </div>
 </header>
 <div class="board">
 <section class="tray" id="tray"></section>
 <section class="targets" id="targets"></section>
 </div>
-<div class="footer"><small>🎯 اسحب الشكل وضعه في المكان الصحيح. عند النجاح، ستحصل على تصفيق! 👏</small></div>
+<div class="footer"><small>🎯 اسحب الشكل وضعه في المكان الصحيح.</small></div>
 </div>
 <div id="popup" class="big-msg hidden"></div>
 
-<audio id="bgMusic" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop autoplay>
+<source src="data:audio/mpeg;base64,//UklGRiQAAABXQVZFZm10IBAAAAABAAEA... (BASE64 الموسيقى هنا)">
 </audio>
 
 <script>
-const LEVELS=[{name:'سهل',count:3},{name:'متوسط',count:6},{name:'صعب',count:9}];
+// === الأصوات المضمنة ===
+const soundCorrect = new Audio("data:audio/mpeg;base64,//UklGRiQAAABXQVZFZm10IBAAAAABAAEA..."); // صوت صحيح
+const soundWrong = new Audio("data:audio/mpeg;base64,//UklGRiQAAABXQVZFZm10IBAAAAABAAEA..."); // صوت خطأ
+
+const LEVELS=[
+{name:'سهل',count:3},
+{name:'متوسط',count:6},
+{name:'صعب',count:9}
+];
 const COLORS=['#ff4d4d','#ffd23f','#66cc66'];
 const SHAPES=['triangle','square','circle','star','hexagon','heart','diamond','moon','cross'];
 
@@ -74,56 +226,10 @@ const targets=document.getElementById('targets');
 const scoreEl=document.getElementById('score');
 const levelNameEl=document.getElementById('levelName');
 const popup=document.getElementById('popup');
-const bgMusic=document.getElementById('bgMusic');
-const musicToggle=document.getElementById('musicToggle');
-
 let score=0;
 let currentLevelIndex=0;
-let musicOn=false;
 
-// أصوات من Mixkit
-const correctSound=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-1670.mp3");
-const wrongSound=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-penalty-2024.mp3");
-const clapSound=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-animated-small-group-applause-523.mp3");
-
-function initLevel(index){
-currentLevelIndex=index;
-const level=LEVELS[index];
-levelNameEl.textContent=level.name;
-score=0; scoreEl.textContent=score;
-tray.innerHTML=''; targets.innerHTML='';
-
-const shapesToUse=SHAPES.slice(0,level.count);
-const targetsOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
-const trayOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
-
-trayOrder.forEach((s,i)=>{
-const d=document.createElement('div');
-d.className='draggable';
-d.dataset.shape=s;
-const color=COLORS[i%COLORS.length];
-d.dataset.color=color;
-d.innerHTML=createShapeSVG(s,color);
-tray.appendChild(d);
-makeDraggable(d);
-});
-
-targetsOrder.forEach(t=>{
-const box=document.createElement('div');
-box.className='target';
-box.dataset.accept=t;
-box.innerHTML=`<div>${createShapeSVG(t,'#f0f0f0')}</div>`;
-box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('highlight');});
-box.addEventListener('dragleave',()=>box.classList.remove('highlight'));
-box.addEventListener('drop',e=>{
-e.preventDefault();box.classList.remove('highlight');
-const [shape,color]=e.dataTransfer.getData('text/plain').split('::');
-handleDrop(box,shape,color);
-});
-targets.appendChild(box);
-});
-}
-
+// === إنشاء الأشكال ===
 function createShapeSVG(type,color){
 const shapes={
 triangle:`<polygon points="50,12 90,88 10,88" fill="${color}"/>`,
@@ -139,6 +245,7 @@ cross:`<path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${co
 return `<svg class="shape" viewBox="0 0 100 100">${shapes[type]}</svg>`;
 }
 
+// === قابلية السحب ===
 function makeDraggable(item){
 item.draggable=true;
 item.addEventListener('dragstart',e=>{
@@ -148,61 +255,74 @@ setTimeout(()=>item.classList.add('hidden'),10);
 item.addEventListener('dragend',()=>item.classList.remove('hidden'));
 }
 
+// === التعامل مع السقوط ===
 function handleDrop(box,shape,color){
 const item=[...tray.children].find(el=>el.dataset.shape===shape);
 if(!item) return;
 if(box.dataset.accept===shape){
 score+=10; scoreEl.textContent=score;
-correctSound.currentTime=0; correctSound.play();
+soundCorrect.currentTime=0; soundCorrect.play();
 box.innerHTML=createShapeSVG(shape,color);
 item.remove();
 if(tray.children.length===0) setTimeout(showLevelCompleted,500);
 }else{
-wrongSound.currentTime=0; wrongSound.play();
+soundWrong.currentTime=0; soundWrong.play();
 }
+}
+
+// === تهيئة المستوى ===
+function initLevel(index){
+currentLevelIndex=index;
+const level=LEVELS[index];
+levelNameEl.textContent=level.name;
+score=0; scoreEl.textContent=score;
+tray.innerHTML=''; targets.innerHTML='';
+
+const shapesToUse=SHAPES.slice(0,level.count);
+const targetsOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
+const trayOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
+
+trayOrder.forEach((s,i)=>{
+const d=document.createElement('div');
+d.className='draggable';
+d.dataset.shape=s;
+const color=COLORS[i % COLORS.length];
+d.dataset.color=color;
+d.innerHTML=createShapeSVG(s,color);
+tray.appendChild(d);
+makeDraggable(d);
+});
+
+targetsOrder.forEach(t=>{
+const box=document.createElement('div');
+box.className='target';
+box.dataset.accept=t;
+box.innerHTML=`<div>${createShapeSVG(t,'#f0f0f0')}</div>`;
+box.addEventListener('dragover',e=>{e.preventDefault(); box.classList.add('highlight');});
+box.addEventListener('dragleave',()=>box.classList.remove('highlight'));
+box.addEventListener('drop',e=>{
+e.preventDefault(); box.classList.remove('highlight');
+const [shape,color]=e.dataTransfer.getData('text/plain').split('::');
+handleDrop(box,shape,color);
+});
+targets.appendChild(box);
+});
 }
 
 function showLevelCompleted(){
 const next=currentLevelIndex+1;
-popup.innerHTML=`
-<img src="clap.gif" class="clap-gif" alt="تصفيق">
-<h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
-<p>النقاط: <strong>${score}</strong></p>
-`;
-
-clapSound.currentTime=0; clapSound.play();
-
-if(next<LEVELS.length){
-popup.innerHTML+=`<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
-}else{
-popup.innerHTML+=`<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;
-}
-
+popup.innerHTML=`<h2>🎉 أحسنت! أنجزت المستوى ${LEVELS[currentLevelIndex].name}</h2>
+<p>النقاط: <strong>${score}</strong></p>`;
+if(next<LEVELS.length) popup.innerHTML+=`<button id="nextLevel" class="play-btn">المستوى التالي ➡️</button>`;
+else popup.innerHTML+=`<button id="replayAll" class="play-btn">إعادة اللعبة 🔁</button>`;
 popup.classList.remove('hidden');
-
-if(next<LEVELS.length){
-document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden'); initLevel(next);};
-}else{
-document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden'); initLevel(0);};
-}
+if(next<LEVELS.length) document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden'); initLevel(next);};
+else document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden'); initLevel(0);};
 }
 
-// زر الموسيقى
-musicToggle.onclick=()=>{
-if(!musicOn){
-bgMusic.volume=0.4;
-bgMusic.play().then(()=>{
-musicOn=true;
-musicToggle.textContent='إيقاف الموسيقى';
-}).catch(err=>{alert("🎵 اضغطي مرة ثانية لتشغيل الموسيقى.");});
-}else{
-bgMusic.pause();
-musicOn=false;
-musicToggle.textContent='تشغيل الموسيقى';
-}
-};
-
+// === أزرار التحكم ===
 document.getElementById('restart').onclick=()=>initLevel(0);
+
 initLevel(0);
 </script>
 </body>
