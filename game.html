@@ -41,7 +41,7 @@
     <header>
       <div>
         <h1>لعبة مطابقة الأشكال — للأطفال 🎈</h1>
-        <img src="logo.png" class="logo">
+        <img src="new_logo.png" class="logo">
         <div style="font-size:13px;color:#666">نسخة ألوان: أحمر - أصفر - أخضر، مع مستويات وموسيقى خفيفة.</div>
       </div>
 
@@ -83,6 +83,8 @@ const popup = document.getElementById('popup');
 let score = 0;
 let currentLevelIndex = 0;
 let musicOn = false;
+
+const clapImage = "Gemini_Generated_Image_wudirdwudirdwudi-_1_ (1).gif"; // صورة التصفيق
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
@@ -150,11 +152,10 @@ function playError(){
   setTimeout(()=>o.stop(),250);
 }
 
-// أصوات تصفيق وتشجيع عند الفوز
+// صوت تصفيق وتشجيع
 function playCelebration(){
   if(!AudioContext) return;
   if(!audioCtx) audioCtx = new AudioContext();
-  // تصفيق
   for(let i=0;i<5;i++){
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
@@ -167,7 +168,6 @@ function playCelebration(){
     g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+i*0.1+0.15);
     o.stop(audioCtx.currentTime+i*0.1+0.2);
   }
-  // تشجيع
   for(let i=0;i<3;i++){
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
@@ -275,17 +275,51 @@ function flashBox(box){
   setTimeout(()=>{ box.style.transform=old; },140);
 }
 
+// ✅ دالة عرض صورة التصفيق بعد كل مرحلة
 function showLevelCompleted(){
-  const nextIndex=currentLevelIndex+1;
-  if(nextIndex<LEVELS.length){
-    popup.innerHTML=`<h2 style="margin:0 0 8px 0">مبروك! انتقلت للمرحلة التالية 🎉</h2><div style="margin-bottom:8px">نقاطك: <strong>${score}</strong></div><div><button id="nextLevel" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">التالي</button> <button id="replayLevel" style="padding:8px 12px;border-radius:10px;border:none;background:#eee;color:#333;margin-right:8px">إعادة</button></div>`;
-    popup.classList.remove('hidden');
-    document.getElementById('nextLevel').addEventListener('click', ()=>{ popup.classList.add('hidden'); initLevel(nextIndex); });
-    document.getElementById('replayLevel').addEventListener('click', ()=>{ popup.classList.add('hidden'); initLevel(currentLevelIndex); });
+  const nextIndex = currentLevelIndex + 1;
+
+  playCelebration();
+
+  popup.innerHTML = `
+    <div style="text-align:center">
+      <img src="${clapImage}" alt="تصفيق" style="width:180px;height:auto;margin-bottom:10px;">
+      <h2 style="margin:0 0 8px 0">مبروك! 🎉</h2>
+      <div style="margin-bottom:8px">نقاطك: <strong>${score}</strong></div>
+    </div>
+  `;
+
+  if(nextIndex < LEVELS.length){
+    popup.innerHTML += `
+      <div>
+        <button id="nextLevel" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">التالي</button>
+        <button id="replayLevel" style="padding:8px 12px;border-radius:10px;border:none;background:#eee;color:#333;margin-right:8px">إعادة</button>
+      </div>
+    `;
   } else {
-    popup.innerHTML=`<h2 style="margin:0 0 8px 0">رائع! انتهت اللعبة 🎉</h2><div style="margin-bottom:8px">مجموع نقاطك: <strong>${score}</strong></div><div><button id="replayAll" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">إعادة اللعبة</button></div>`;
-    popup.classList.remove('hidden');
-    document.getElementById('replayAll').addEventListener('click', ()=>{ popup.classList.add('hidden'); initLevel(0); });
+    popup.innerHTML += `
+      <div>
+        <button id="replayAll" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">إعادة اللعبة</button>
+      </div>
+    `;
+  }
+
+  popup.classList.remove("hidden");
+
+  if(nextIndex < LEVELS.length){
+    document.getElementById("nextLevel").addEventListener("click", ()=>{
+      popup.classList.add("hidden");
+      initLevel(nextIndex);
+    });
+    document.getElementById("replayLevel").addEventListener("click", ()=>{
+      popup.classList.add("hidden");
+      initLevel(currentLevelIndex);
+    });
+  } else {
+    document.getElementById("replayAll").addEventListener("click", ()=>{
+      popup.classList.add("hidden");
+      initLevel(0);
+    });
   }
 }
 
@@ -309,4 +343,3 @@ initLevel(0);
 </script>
 </body>
 </html>
-
