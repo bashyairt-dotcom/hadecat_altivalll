@@ -32,6 +32,7 @@
     .hidden{display:none}
     .center-row{display:flex;gap:8px;align-items:center}
     .big-msg{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#fff,#fffaf0);padding:18px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.14);text-align:center;z-index:60}
+    video.clap-video{width:220px;height:auto;border-radius:12px;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);}
     img.logo{height:80px;width:80px;object-fit:contain;margin-top:6px}
     @media (max-width:980px){.game{width:95%}.board{flex-direction:column-reverse}.targets{flex-direction:row;flex-wrap:wrap}}
   </style>
@@ -41,7 +42,7 @@
     <header>
       <div>
         <h1>لعبة مطابقة الأشكال — للأطفال 🎈</h1>
-        <img src="logo.png" class="logo">
+        <img src="new_logo.png" class="logo">
         <div style="font-size:13px;color:#666">نسخة ألوان: أحمر - أصفر - أخضر، مع مستويات وموسيقى خفيفة.</div>
       </div>
 
@@ -84,7 +85,7 @@ let score = 0;
 let currentLevelIndex = 0;
 let musicOn = false;
 
-const clapImage = "Gemini_Generated_Image_wudirdwudirdwudi-_1_ (1).gif"; // صورة التصفيق
+const clapVideo = "clap_video.mp4"; // ← ضع اسم الفيديو هنا
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
@@ -124,35 +125,6 @@ function startMusic(){
 
 function stopMusic(){ musicOn=false; if(musicNodes && audioCtx){musicNodes.forEach(n=>{n.gain.cancelScheduledValues(0);});} }
 
-function playSuccess(){
-  if(!AudioContext) return;
-  if(!audioCtx) audioCtx=new AudioContext();
-  const o=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  o.type='triangle'; o.frequency.value=880;
-  g.gain.value=0.0001;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start();
-  g.gain.exponentialRampToValueAtTime(0.12,audioCtx.currentTime+0.02);
-  g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.28);
-  setTimeout(()=>o.stop(),300);
-}
-
-function playError(){
-  if(!AudioContext) return;
-  if(!audioCtx) audioCtx=new AudioContext();
-  const o=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  o.type='sawtooth'; o.frequency.value=220;
-  g.gain.value=0.0001;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start();
-  g.gain.exponentialRampToValueAtTime(0.08,audioCtx.currentTime+0.02);
-  g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.2);
-  setTimeout(()=>o.stop(),250);
-}
-
-// صوت تصفيق وتشجيع
 function playCelebration(){
   if(!AudioContext) return;
   if(!audioCtx) audioCtx = new AudioContext();
@@ -168,38 +140,27 @@ function playCelebration(){
     g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+i*0.1+0.15);
     o.stop(audioCtx.currentTime+i*0.1+0.2);
   }
-  for(let i=0;i<3;i++){
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type='triangle';
-    o.frequency.value=440+i*50;
-    g.gain.value=0.001;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(audioCtx.currentTime+i*0.3);
-    g.gain.exponentialRampToValueAtTime(0.1,audioCtx.currentTime+i*0.3+0.05);
-    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+i*0.3+0.25);
-    o.stop(audioCtx.currentTime+i*0.3+0.3);
-  }
 }
 
-// SVG generator
 function createShapeSVG(type,color){
-  if(type==='triangle') return `<svg class="shape" viewBox="0 0 100 100"><polygon points="50,12 90,88 10,88" fill="${color}"/></svg>`;
-  if(type==='square') return `<svg class="shape" viewBox="0 0 100 100"><rect x="18" y="18" width="64" height="64" rx="10" fill="${color}"/></svg>`;
-  if(type==='circle') return `<svg class="shape" viewBox="0 0 100 100"><circle cx="50" cy="50" r="28" fill="${color}"/></svg>`;
-  if(type==='star') return `<svg class="shape" viewBox="0 0 100 100"><path d="M50 10 L61 40 H95 L67 58 L78 90 L50 70 L22 90 L33 58 L5 40 H39z" fill="${color}"/></svg>`;
-  if(type==='hexagon') return `<svg class="shape" viewBox="0 0 100 100"><polygon points="50,10 78,30 78,70 50,90 22,70 22,30" fill="${color}"/></svg>`;
-  if(type==='heart') return `<svg class="shape" viewBox="0 0 100 100"><path d="M50 76 L18 44 A14 14 0 0 1 50 22 A14 14 0 0 1 82 44z" fill="${color}"/></svg>`;
-  if(type==='diamond') return `<svg class="shape" viewBox="0 0 100 100"><polygon points="50,8 82,50 50,92 18,50" fill="${color}"/></svg>`;
-  if(type==='moon') return `<svg class="shape" viewBox="0 0 100 100"><path d="M60 80 A32 32 0 1 1 60 16 A22 22 0 0 0 60 80z" fill="${color}"/></svg>`;
-  if(type==='cross') return `<svg class="shape" viewBox="0 0 100 100"><path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${color}"/></svg>`;
-  return '';
+  const shapes = {
+    triangle:`<polygon points="50,12 90,88 10,88" fill="${color}"/>`,
+    square:`<rect x="18" y="18" width="64" height="64" rx="10" fill="${color}"/>`,
+    circle:`<circle cx="50" cy="50" r="28" fill="${color}"/>`,
+    star:`<path d="M50 10 L61 40 H95 L67 58 L78 90 L50 70 L22 90 L33 58 L5 40 H39z" fill="${color}"/>`,
+    hexagon:`<polygon points="50,10 78,30 78,70 50,90 22,70 22,30" fill="${color}"/>`,
+    heart:`<path d="M50 76 L18 44 A14 14 0 0 1 50 22 A14 14 0 0 1 82 44z" fill="${color}"/>`,
+    diamond:`<polygon points="50,8 82,50 50,92 18,50" fill="${color}"/>`,
+    moon:`<path d="M60 80 A32 32 0 1 1 60 16 A22 22 0 0 0 60 80z" fill="${color}"/>`,
+    cross:`<path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${color}"/>`
+  };
+  return `<svg class="shape" viewBox="0 0 100 100">${shapes[type]}</svg>`;
 }
 
 function makeDraggable(item){
   item.draggable=true;
   item.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain',item.dataset.shape+'::'+item.dataset.color); setTimeout(()=>item.classList.add('hidden'),10); });
-  item.addEventListener('dragend', e=>{ item.classList.remove('hidden'); });
+  item.addEventListener('dragend', ()=> item.classList.remove('hidden'));
 }
 
 function initLevel(index){
@@ -219,128 +180,85 @@ function initLevel(index){
     d.dataset.shape=s;
     const color=COLORS[i%COLORS.length];
     d.dataset.color=color;
-    d.title=s;
     d.innerHTML=createShapeSVG(s,color)+`<div style="font-size:12px;margin-top:6px;color:#333;font-weight:700;text-transform:capitalize">${s}</div>`;
     tray.appendChild(d);
     makeDraggable(d);
   });
 
-  targetsOrder.forEach((t,idx)=>{
+  targetsOrder.forEach((t)=>{
     const box=document.createElement('div');
     box.className='target';
     box.dataset.accept=t;
-    box.style.background='linear-gradient(180deg,#fff, #fffaf6)';
     box.innerHTML=`<div style="text-align:center">${createShapeSVG(t,'#f0f0f0')}<div style="font-size:14px;margin-top:8px;color:#666">وضع ${t} هنا</div></div>`;
     box.addEventListener('dragover', e=>{ e.preventDefault(); box.classList.add('highlight'); });
-    box.addEventListener('dragleave', e=>{ box.classList.remove('highlight'); });
-    box.addEventListener('drop', e=>{ e.preventDefault(); box.classList.remove('highlight'); const data=e.dataTransfer.getData('text/plain'); const [shape,color]=data.split('::'); handleDrop(box,shape,color); });
+    box.addEventListener('dragleave', ()=> box.classList.remove('highlight'));
+    box.addEventListener('drop', e=>{
+      e.preventDefault(); box.classList.remove('highlight');
+      const [shape,color]=e.dataTransfer.getData('text/plain').split('::');
+      handleDrop(box,shape,color);
+    });
     targets.appendChild(box);
   });
 }
 
 function handleDrop(box,shape,color){
-  const draggableItem=findDraggableByShape(shape);
-  if(!draggableItem){ playError(); return; }
-
+  const item=[...tray.children].find(el=>el.dataset.shape===shape);
+  if(!item) return;
   if(box.dataset.accept===shape){
     score+=10; scoreEl.textContent=score;
-    playSuccess(); playCelebration();
-    box.innerHTML='';
-    const clone=draggableItem.cloneNode(true);
-    clone.classList.remove('hidden'); clone.draggable=false; clone.style.cursor='default';
-    clone.querySelector('svg').outerHTML=createShapeSVG(shape,color);
-    box.appendChild(clone);
-    const label=document.createElement('div');
-    label.style.fontSize='13px'; label.style.marginTop='8px'; label.style.color='#1a202c'; label.style.fontWeight='800';
-    label.textContent='مطابق! 🎉';
-    box.appendChild(label);
-    draggableItem.remove();
-
-    if(tray.querySelectorAll('[data-shape]').length===0){
-      setTimeout(()=>{ showLevelCompleted(); },500);
-    }
-  } else { flashBox(box); playError(); }
+    playCelebration();
+    box.innerHTML=createShapeSVG(shape,color)+'<div style="font-size:13px;color:#1a202c;font-weight:800;margin-top:6px;">مطابق! 🎉</div>';
+    item.remove();
+    if(tray.children.length===0) setTimeout(showLevelCompleted,500);
+  }
 }
 
-function findDraggableByShape(shape){
-  const items=tray.querySelectorAll('[data-shape]');
-  for(const it of items) if(it.dataset.shape===shape) return it;
-  return null;
-}
-
-function flashBox(box){
-  const old=box.style.transform;
-  box.style.transition='transform 0.12s';
-  box.style.transform='translateY(-8px)';
-  setTimeout(()=>{ box.style.transform=old; },140);
-}
-
-// ✅ دالة عرض صورة التصفيق بعد كل مرحلة
+// ✅ عرض الفيديو بعد كل مرحلة
 function showLevelCompleted(){
-  const nextIndex = currentLevelIndex + 1;
-
+  const next=currentLevelIndex+1;
   playCelebration();
 
-  popup.innerHTML = `
+  popup.innerHTML=`
     <div style="text-align:center">
-      <img src="${clapImage}" alt="تصفيق" style="width:180px;height:auto;margin-bottom:10px;">
-      <h2 style="margin:0 0 8px 0">مبروك! 🎉</h2>
-      <div style="margin-bottom:8px">نقاطك: <strong>${score}</strong></div>
+      <video class="clap-video" autoplay muted playsinline>
+        <source src="${clapVideo}" type="video/mp4">
+      </video>
+      <h2>مبروك! 🎉</h2>
+      <div>نقاطك: <strong>${score}</strong></div>
     </div>
   `;
 
-  if(nextIndex < LEVELS.length){
-    popup.innerHTML += `
-      <div>
+  if(next<LEVELS.length){
+    popup.innerHTML+=`
+      <div style="margin-top:8px">
         <button id="nextLevel" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">التالي</button>
         <button id="replayLevel" style="padding:8px 12px;border-radius:10px;border:none;background:#eee;color:#333;margin-right:8px">إعادة</button>
-      </div>
-    `;
+      </div>`;
   } else {
-    popup.innerHTML += `
-      <div>
+    popup.innerHTML+=`
+      <div style="margin-top:8px">
         <button id="replayAll" style="padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:800">إعادة اللعبة</button>
-      </div>
-    `;
+      </div>`;
   }
 
-  popup.classList.remove("hidden");
+  popup.classList.remove('hidden');
 
-  if(nextIndex < LEVELS.length){
-    document.getElementById("nextLevel").addEventListener("click", ()=>{
-      popup.classList.add("hidden");
-      initLevel(nextIndex);
-    });
-    document.getElementById("replayLevel").addEventListener("click", ()=>{
-      popup.classList.add("hidden");
-      initLevel(currentLevelIndex);
-    });
+  if(next<LEVELS.length){
+    document.getElementById('nextLevel').onclick=()=>{popup.classList.add('hidden');initLevel(next)};
+    document.getElementById('replayLevel').onclick=()=>{popup.classList.add('hidden');initLevel(currentLevelIndex)};
   } else {
-    document.getElementById("replayAll").addEventListener("click", ()=>{
-      popup.classList.add("hidden");
-      initLevel(0);
-    });
+    document.getElementById('replayAll').onclick=()=>{popup.classList.add('hidden');initLevel(0)};
   }
 }
 
-document.getElementById('restart').addEventListener('click', ()=>initLevel(0));
-
-document.getElementById('musicToggle').addEventListener('click', async ()=>{
-  try{
-    if(!audioCtx) audioCtx=new AudioContext();
-    if(!musicOn){
-      await audioCtx.resume();
-      startMusic();
-      document.getElementById('musicToggle').textContent='إيقاف الموسيقى';
-    } else {
-      stopMusic();
-      document.getElementById('musicToggle').textContent='تشغيل الموسيقى';
-    }
-  }catch(e){console.warn(e);}
-});
+document.getElementById('restart').onclick=()=>initLevel(0);
+document.getElementById('musicToggle').onclick=async()=>{
+  if(!audioCtx) audioCtx=new AudioContext();
+  if(!musicOn){await audioCtx.resume();startMusic();musicOn=true;event.target.textContent='إيقاف الموسيقى';}
+  else{stopMusic();musicOn=false;event.target.textContent='تشغيل الموسيقى';}
+};
 
 initLevel(0);
 </script>
 </body>
 </html>
-
