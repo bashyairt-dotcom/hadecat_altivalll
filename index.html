@@ -78,7 +78,7 @@
 
 <button onclick="playSound(); startGame();">ابدأ اللعب 🎮</button>
 
-<!-- صوت الخلفية المستخرج من الفيديو -->
+<!-- صوت الخلفية -->
 <audio id="bgAudio" loop>
   <source src="background-audio.m4a" type="audio/mpeg">
 </audio>
@@ -92,15 +92,22 @@
   const bgAudio = document.getElementById('bgAudio');
   const clickSound = document.getElementById('clickSound');
 
-  // تشغيل الصوت الخلفي بعد أول نقرة (لتجنب حظر autoplay)
+  // نحاول تشغيل الصوت تلقائياً
   window.addEventListener('DOMContentLoaded', () => {
-    document.body.addEventListener('click', () => {
-      if(bgAudio.paused) {
-        bgAudio.volume = 0.4;
+    bgAudio.volume = 0.4;
+    bgAudio.play().catch(() => {
+      // إذا المتصفح رفض التشغيل، ننتظر أول نقرة
+      document.body.addEventListener('click', () => {
         bgAudio.play().catch(()=>{});
-      }
-    }, { once: true });
+      }, { once: true });
+    });
   });
+
+  // تشغيل صوت عند النقر (مثلاً على زر)
+  function playClickSound() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  }
 
  function playSound() {
   clickSound.currentTime = 0;
@@ -125,6 +132,7 @@
 </script>
 </body>
 </html>
+
 
 
 
