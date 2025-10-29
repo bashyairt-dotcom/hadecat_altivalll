@@ -220,7 +220,8 @@ const LEVELS=[
 {name:'صعب',count:9}
 ];
 const COLORS=['#ff4d4d','#ffd23f','#66cc66'];
-const SHAPES=['triangle','square','circle','star','hexagon','heart','diamond','cross'];
+const SHAPES=['triangle','square','circle','star','hexagon','heart','diamond','moon','cross'];
+
 
 const tray=document.getElementById('tray');
 const targets=document.getElementById('targets');
@@ -232,17 +233,19 @@ let currentLevelIndex=0;
 
 // === إنشاء الأشكال ===
 function createShapeSVG(type,color){
-const shapes={
-triangle:`<polygon points="50,12 90,88 10,88" fill="${color}"/>`,
-square:`<rect x="18" y="18" width="64" height="64" rx="10" fill="${color}"/>`,
-circle:`<circle cx="50" cy="50" r="28" fill="${color}"/>`,
-star:`<path d="M50 10 L61 40 H95 L67 58 L78 90 L50 70 L22 90 L33 58 L5 40 H39z" fill="${color}"/>`,
-hexagon:`<polygon points="50,10 78,30 78,70 50,90 22,70 22,30" fill="${color}"/>`,
-heart:`<path d="M50 76 L18 44 A14 14 0 0 1 50 22 A14 14 0 0 1 82 44z" fill="${color}"/>`,
-diamond:`<polygon points="50,8 82,50 50,92 18,50" fill="${color}"/>`,
-cross:`<path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${color}"/>
-};
-return `<svg class="shape" viewBox="0 0 100 100">${shapes[type]}</svg>`;
+  const shapes={
+    triangle:`<polygon points="50,12 90,88 10,88" fill="${color}"/>`,
+    square:`<rect x="18" y="18" width="64" height="64" rx="10" fill="${color}"/>`,
+    circle:`<circle cx="50" cy="50" r="28" fill="${color}"/>`,
+    star:`<path d="M50 10 L61 40 H95 L67 58 L78 90 L50 70 L22 90 L33 58 L5 40 H39z" fill="${color}"/>`,
+    hexagon:`<polygon points="50,10 78,30 78,70 50,90 22,70 22,30" fill="${color}"/>`,
+    heart:`<path d="M50 76 L18 44 A14 14 0 0 1 50 22 A14 14 0 0 1 82 44z" fill="${color}"/>`,
+    diamond:`<polygon points="50,8 82,50 50,92 18,50" fill="${color}"/>`,
+    moon:`<path d="M60 80 A32 32 0 1 1 60 16 A22 22 0 0 0 60 80z" fill="${color}"/>`,
+    cross:`<path d="M42 10 H58 V42 H90 V58 H58 V90 H42 V58 H10 V42 H42 Z" fill="${color}"/>`,
+    cloud:`<path d="M70 65 H30 A20 20 0 0 1 30 35 A15 15 0 0 1 55 30 A15 15 0 0 1 70 45 A15 15 0 0 1 85 60 A15 15 0 0 1 70 65 Z" fill="${color}"/>`
+  };
+  return `<svg class="shape" viewBox="0 0 100 100">${shapes[type]}</svg>`;
 }
 
 // === قابلية السحب ===
@@ -274,42 +277,49 @@ if(box.dataset.accept===shape){
 
 // === تهيئة المستوى ===
 function initLevel(index){
-currentLevelIndex=index;
-const level=LEVELS[index];
-levelNameEl.textContent=level.name;
-score=0; scoreEl.textContent=score;
-tray.innerHTML=''; targets.innerHTML='';
+  currentLevelIndex=index;
+  const level=LEVELS[index];
+  levelNameEl.textContent=level.name;
+  score=0; scoreEl.textContent=score;
+  tray.innerHTML=''; targets.innerHTML='';
 
-const shapesToUse=SHAPES.slice(0,level.count);
-const targetsOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
-const trayOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
+  let shapesToUse=SHAPES.slice(0,level.count);
 
-trayOrder.forEach((s,i)=>{
-const d=document.createElement('div');
-d.className='draggable';
-d.dataset.shape=s;
-const color=COLORS[i % COLORS.length];
-d.dataset.color=color;
-d.innerHTML=createShapeSVG(s,color);
-tray.appendChild(d);
-makeDraggable(d);
-});
+  // ✅ استبدال شكل القمر بشكل "cloud" في المستوى الثالث
+  if(index===2){ // المستوى الصعب
+    shapesToUse = shapesToUse.map(s => s==='moon' ? 'cloud' : s);
+  }
 
-targetsOrder.forEach(t=>{
-const box=document.createElement('div');
-box.className='target';
-box.dataset.accept=t;
-box.innerHTML=`<div>${createShapeSVG(t,'#f0f0f0')}</div>`;
-box.addEventListener('dragover',e=>{e.preventDefault(); box.classList.add('highlight');});
-box.addEventListener('dragleave',()=>box.classList.remove('highlight'));
-box.addEventListener('drop',e=>{
-e.preventDefault(); box.classList.remove('highlight');
-const [shape,color]=e.dataTransfer.getData('text/plain').split('::');
-handleDrop(box,shape,color);
-});
-targets.appendChild(box);
-});
+  const targetsOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
+  const trayOrder=shapesToUse.slice().sort(()=>Math.random()-0.5);
+
+  trayOrder.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='draggable';
+    d.dataset.shape=s;
+    const color=COLORS[i % COLORS.length];
+    d.dataset.color=color;
+    d.innerHTML=createShapeSVG(s,color);
+    tray.appendChild(d);
+    makeDraggable(d);
+  });
+
+  targetsOrder.forEach(t=>{
+    const box=document.createElement('div');
+    box.className='target';
+    box.dataset.accept=t;
+    box.innerHTML=`<div>${createShapeSVG(t,'#f0f0f0')}</div>`;
+    box.addEventListener('dragover',e=>{e.preventDefault(); box.classList.add('highlight');});
+    box.addEventListener('dragleave',()=>box.classList.remove('highlight'));
+    box.addEventListener('drop',e=>{
+      e.preventDefault(); box.classList.remove('highlight');
+      const [shape,color]=e.dataTransfer.getData('text/plain').split('::');
+      handleDrop(box,shape,color);
+    });
+    targets.appendChild(box);
+  });
 }
+
 
 function showLevelCompleted(){
     const next=currentLevelIndex+1;
@@ -357,6 +367,7 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
 
