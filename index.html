@@ -101,35 +101,6 @@
   </button>
 </div>
 
-<script>
-// === إصلاح وتشغيل الصوت على الأجهزة المحمولة (iPad / iPhone) ===
-const enableSoundBtn = document.getElementById('enableSoundBtn');
-const soundPrompt = document.getElementById('soundPrompt');
-const bgMusic = document.getElementById('bgMusic');
-
-enableSoundBtn.addEventListener('click', () => {
-  // تشغيل الموسيقى الخلفية
-  if (bgMusic && bgMusic.paused) {
-    bgMusic.volume = 0.4;
-    bgMusic.play().catch(()=>{});
-  }
-
-  // تفعيل باقي الأصوات
-  [soundCorrect, soundWrong, soundNextLevel].forEach(a => {
-    a.volume = 0; // تشغيل بدون صوت أولاً
-    a.play().then(() => {
-      a.pause();
-      a.currentTime = 0;
-      a.volume = 1; // بعد التشغيل نرجع الصوت
-    }).catch(()=>{});
-  });
-
-  // إخفاء النافذة بعد التفعيل
-  soundPrompt.style.opacity = '0';
-  soundPrompt.style.transition = 'opacity 0.6s';
-  setTimeout(() => soundPrompt.style.display = 'none', 600);
-});
-</script>
 
 
 <script>
@@ -174,8 +145,39 @@ enableSoundBtn.addEventListener('click', () => {
     }
   }
 </script>
+  <script>
+// === إصلاح وتشغيل الصوت على الأجهزة المحمولة (iPad / iPhone) ===
+const enableSoundBtn = document.getElementById('enableSoundBtn');
+const soundPrompt = document.getElementById('soundPrompt');
+const bgMusic = document.getElementById('bgMusic');
+
+enableSoundBtn.addEventListener('click', () => {
+  // تشغيل الموسيقى الخلفية
+  if (bgMusic && bgMusic.paused) {
+    bgMusic.volume = 0.4;
+    bgMusic.play().catch(()=>{});
+  }
+
+  // تفعيل باقي الأصوات
+  [soundCorrect, soundWrong, soundNextLevel].forEach(a => {
+    a.volume = 0; // تشغيل بدون صوت أولاً
+    a.play().then(() => {
+      a.pause();
+      a.currentTime = 0;
+      a.volume = 1; // بعد التشغيل نرجع الصوت
+    }).catch(()=>{});
+  });
+
+  // إخفاء النافذة بعد التفعيل
+  soundPrompt.style.opacity = '0';
+  soundPrompt.style.transition = 'opacity 0.6s';
+  setTimeout(() => soundPrompt.style.display = 'none', 600);
+});
+</script>
+
 </body>
 </html>
+
 
 
 
