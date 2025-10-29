@@ -212,6 +212,7 @@ small{color:#666;}
 // === الأصوات المضمنة ===
 const soundCorrect = new Audio("corr.m4a"); // صوت صحيح
 const soundWrong = new Audio("inc.m4a");    // صوت خطأ
+const soundNextLevel = new Audio("next.m4a"); // ✅ صوت الانتقال للمستوى التالي
 
 const LEVELS=[
 {name:'سهل',count:3},
@@ -219,7 +220,7 @@ const LEVELS=[
 {name:'صعب',count:9}
 ];
 const COLORS=['#ff4d4d','#ffd23f','#66cc66'];
-const SHAPES=['triangle','square','circle','star','hexagon','heart','diamond','moon','cross'];
+const SHAPES=['triangle','square','circle','star','hexagon','heart','diamond','cloud','cross'];
 
 const tray=document.getElementById('tray');
 const targets=document.getElementById('targets');
@@ -331,7 +332,7 @@ function showLevelCompleted(){
     clapImg.addEventListener('load',()=>playCorrect());
 
     // إضافة الصوت عند الانتقال للمستوى التالي
-    const nextLevelSound = new Audio('nextLevel.m4a');
+    const nextLevelSound = new Audio('next.m4a');
 
     if(next<LEVELS.length){
         document.getElementById('nextLevel').onclick = () => {
@@ -357,6 +358,7 @@ initLevel(0);
 </script>
 </body>
 </html>
+
 
 
 
